@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  {{ 'Edit product' if product else 'New product' }} – Warehouse
+{% endblock %}
+
+{% block content %}
+
+<div class="sh-page-header">
+  <h2>{{ 'Edit product' if product else 'New product' }}</h2>
+</div>
+
+<div class="card sh-form-card">
+  <form method="post" class="sh-form">
+
+    <div class="sh-form-group">
+      <label>SKU</label>
+      <input name="sku" required value="{{ product.sku if product else '' }}">
+    </div>
+
+    <div class="sh-form-group">
+      <label>Name</label>
+      <input name="name" required value="{{ product.name if product else '' }}">
+    </div>
+
+    <div class="sh-form-group">
+      <label>Quantity</label>
+      <input type="number" name="quantity" value="{{ product.quantity if product else 0 }}">
+    </div>
+
+    <div class="sh-form-group">
+      <label>Low stock threshold (min)</label>
+      <input type="number" name="min_threshold" min="0"
+             value="{{ product.min_threshold if product else threshold_default }}">
+    </div>
+
+    <div class="sh-form-group sh-checkbox">
+      <label>
+        <input type="checkbox" name="allow_negative"
+          {% if product and product.allow_negative %}checked
+          {% elif not product %}checked
+          {% endif %}>
+        Allow negative stock
+      </label>
+    </div>
+
+    <div class="sh-form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a class="btn btn-secondary" href="{{ url_for('index') }}">Cancel</a>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

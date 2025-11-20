@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Inventory - Superior Hoods{% endblock %}</title>
+
+    <!-- Fonte parecida com a do site -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="sh-header">
+        <div class="sh-header-inner">
+            <div class="sh-logo">
+                <img src="{{ url_for('static', filename='img/superiorhoods-logo.png') }}"
+                     alt="Superior Hoods">
+            </div>
+            <nav class="sh-nav">
+                <a href="{{ url_for('index') }}">Products</a>
+                <a href="{{ url_for('report') }}">Report</a>
+                <!-- coloque outros links se quiser -->
+            </nav>
+        </div>
+    </header>
+
+    <section class="sh-hero">
+        <div class="sh-hero-inner">
+            <h1>Inventory Management</h1>
+            <p>Internal tool inspired by Superior Hoods branding.</p>
+        </div>
+    </section>
+
+    <main class="sh-main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-container">
+              {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="sh-footer">
+        <p>© {{ datetime.utcnow().year }} Superior Hoods – Internal Inventory</p>
+    </footer>
+</body>
+</html>
