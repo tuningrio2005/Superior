@@ -411,54 +411,63 @@ def report_download_pdf():
 
 @app.route("/report/download/xlsx")
 def report_download_xlsx():
-    import pandas as pd
+    from openpyxl import Workbook
     from openpyxl.styles import PatternFill, Font
     from openpyxl.formatting.rule import CellIsRule
 
     products = Product.query.order_by(Product.name).all()
 
-    rows = []
+    # Cria workbook e aba
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Inventory"
+
+    # Cabeçalhos
+    headers = ["SKU", "Name", "Quantity", "Min", "Status", "AllowNegative"]
+    ws.append(headers)
+
+    # Deixa o cabeçalho em negrito
+    header_font = Font(bold=True)
+    for cell in ws[1]:
+        cell.font = header_font
+
+    # Linhas de dados
     for p in products:
-        rows.append({
-            "SKU": p.sku,
-            "Name": p.name,
-            "Quantity": p.quantity,
-            "Min": p.min_threshold,
-            "Status": "LOW" if p.quantity < p.min_threshold else "OK",
-            "AllowNegative": "YES" if p.allow_negative else "NO",
-        })
+        status = "LOW" if p.quantity < p.min_threshold else "OK"
+        allow_neg = "YES" if p.allow_negative else "NO"
+        ws.append([
+            p.sku,
+            p.name,
+            p.quantity,
+            p.min_threshold,
+            status,
+            allow_neg,
+        ])
 
-    df = pd.DataFrame(rows)
+    # Ajusta larguras das colunas
+    widths = {"A": 18, "B": 40, "C": 12, "D": 10, "E": 10, "F": 14}
+    for col, w in widths.items():
+        ws.column_dimensions[col].width = w
 
+    # Formatação condicional: Status = LOW em vermelho na coluna E
+    red_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+    ws.conditional_formatting.add(
+        "E2:E50000",
+        CellIsRule(operator="equal", formula=['"LOW"'], fill=red_fill)
+    )
+
+    # Formatação condicional: Quantity < 0 em vermelho na coluna C
+    ws.conditional_formatting.add(
+        "C2:C50000",
+        CellIsRule(operator="lessThan", formula=["0"], fill=red_fill)
+    )
+
+    # Salva em memória e envia
     bio = BytesIO()
-    with pd.ExcelWriter(bio, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False, sheet_name="Inventory")
-        ws = writer.sheets["Inventory"]
-
-        widths = {"A": 18, "B": 40, "C": 12, "D": 10, "E": 10, "F": 14}
-        for col, w in widths.items():
-            ws.column_dimensions[col].width = w
-
-        for cell in ws[1]:
-            cell.font = Font(bold=True)
-
-        red_fill = PatternFill(start_color="FFC7CE",
-                               end_color="FFC7CE",
-                               fill_type="solid")
-
-        ws.conditional_formatting.add(
-            "E2:E50000",
-            CellIsRule(operator="equal", formula=['"LOW"'], fill=red_fill)
-        )
-
-        ws.conditional_formatting.add(
-            "C2:C50000",
-            CellIsRule(operator="lessThan", formula=["0"], fill=red_fill)
-        )
-
+    wb.save(bio)
     bio.seek(0)
-    filename = f"inventory_report_{datetime.utcnow().strftime('%Y%m%d_%H%M%SZ')}.xlsx"
 
+    filename = f"inventory_report_{datetime.utcnow().strftime('%Y%m%d_%H%M%SZ')}.xlsx"
     return send_file(
         bio,
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
