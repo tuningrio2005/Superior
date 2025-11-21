@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    {% block title %}Warehouse – Superior Hoods{% endblock %}
+  </title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=3">
+</head>
+<body>
+  <header class="sh-header">
+    <div class="sh-header-inner">
+      <div class="sh-logo">
+        <!-- Ajuste o nome do arquivo conforme o que você salvou em static/img -->
+        <img src="{{ url_for('static', filename='img/Superior-Hoods-Logo.png') }}" alt="Superior Hoods">
+      </div>
+      <nav class="sh-nav">
+        <a href="{{ url_for('index') }}">Products</a>
+        <a href="{{ url_for('product_new') }}">New product</a>
+        <a href="{{ url_for('report') }}">Report</a>
+        <a href="{{ url_for('report_download_csv') }}">CSV</a>
+        <a href="{{ url_for('report_download_pdf') }}">PDF</a>
+        <a href="{{ url_for('report_download_xlsx') }}">XLSX</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="sh-hero">
+    <div class="sh-hero-inner">
+      <h1>Inventory Management</h1>
+      <p>Internal stock control inspired by the Superior Hoods brand.</p>
+    </div>
+  </section>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main class="sh-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="sh-footer">
+    <small>Default threshold: {{ threshold_default if threshold_default is defined else '—' }}</small>
+  </footer>
+</body>
+</html>

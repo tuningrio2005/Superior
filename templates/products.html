@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}Products – Warehouse{% endblock %}
+
+{% block content %}
+
+<div class="sh-page-header">
+  <div>
+    <h2>Products</h2>
+    {% if q %}
+      <p class="sh-subtitle">Results for: <strong>{{ q }}</strong></p>
+    {% else %}
+      <p class="sh-subtitle">Manage your current inventory.</p>
+    {% endif %}
+  </div>
+  <a href="{{ url_for('product_new') }}" class="btn btn-primary">
+    + New product
+  </a>
+</div>
+
+<form method="get" class="sh-search">
+  <input type="text" name="q" placeholder="Search by name or SKU" value="{{ q }}">
+  <button type="submit" class="btn btn-secondary">Search</button>
+</form>
+
+{% if low and not q %}
+<div class="card panel-warn">
+  <strong>Low stock items:</strong>
+  <ul>
+    {% for p in low %}
+      <li>{{ p.name }} ({{ p.sku }}) — {{ p.quantity }} in stock (min {{ p.min_threshold }})</li>
+    {% endfor %}
+  </ul>
+  <form action="{{ url_for('run_stock_check') }}">
+    <button type="submit" class="btn btn-primary">Send alerts now</button>
+  </form>
+</div>
+{% endif %}
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Min</th>
+        <th>Allow negative?</th>
+        <th style="width: 340px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td>{{ p.sku }}</td>
+        <td>{{ p.name }}</td>
+        <td style="color: {% if p.quantity < 0 %}#ff6b6b{% else %}inherit{% endif %};">
+          {{ p.quantity }}
+        </td>
+        <td>{{ p.min_threshold }}</td>
+        <td>{{ "YES" if p.allow_negative else "NO" }}</td>
+        <td class="actions">
+          <form method="post" action="{{ url_for('product_add', pid=p.id) }}" class="inline-form">
+            <input type="number" name="amount" min="1" placeholder="+">
+            <input type="text" name="note" placeholder="Note">
+            <button class="btn btn-secondary">Add</button>
+          </form>
+
+          <form method="post" action="{{ url_for('product_remove', pid=p.id) }}" class="inline-form">
+            <input type="number" name="amount" min="1" placeholder="-">
+            <input type="text" name="note" placeholder="Note">
+            <button class="btn btn-secondary">Remove</button>
+          </form>
+
+          <div class="row-actions">
+            <a href="{{ url_for('product_edit', pid=p.id) }}" class="btn btn-link">Edit</a>
+            <form method="post"
+                  action="{{ url_for('product_delete', pid=p.id) }}"
+                  onsubmit="return confirm('Delete this product?');"
+                  class="inline-form">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if not products %}
+  <p>No products yet. Click “+ New product”.</p>
+{% endif %}
+
+{% endblock %}

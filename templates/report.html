@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}Inventory report – Warehouse{% endblock %}
+
+{% block content %}
+
+<div class="sh-page-header">
+  <div>
+    <h2>Inventory report</h2>
+    <p class="sh-subtitle">Overview of current stock and low inventory items.</p>
+  </div>
+</div>
+
+<div class="sh-download-bar">
+  <span>Export:</span>
+  <a class="btn btn-secondary" href="{{ url_for('report_download_csv') }}">⬇ CSV</a>
+  <a class="btn btn-secondary" href="{{ url_for('report_download_pdf') }}">⬇ PDF</a>
+  <a class="btn btn-secondary" href="{{ url_for('report_download_xlsx') }}">⬇ XLSX</a>
+</div>
+
+<p style="margin: 8px 0 16px;">
+  Total SKUs: <strong>{{ total_skus }}</strong>
+</p>
+
+<div class="card">
+  <h3 style="margin-bottom: 10px;">Current stock</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Min</th>
+        <th>Status</th>
+        <th>Allow negative?</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in products %}
+      <tr>
+        <td>{{ p.sku }}</td>
+        <td>{{ p.name }}</td>
+        <td style="color: {% if p.quantity < 0 %}#ff6b6b{% else %}inherit{% endif %};">
+          {{ p.quantity }}
+        </td>
+        <td>{{ p.min_threshold }}</td>
+        <td>
+          {% if p.quantity < p.min_threshold %}
+            <span style="color:#b3261e; font-weight:600;">⚠ LOW</span>
+          {% else %}
+            <span style="color:#276738; font-weight:600;">OK</span>
+          {% endif %}
+        </td>
+        <td>{{ "YES" if p.allow_negative else "NO" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card" style="margin-top: 20px;">
+  <h3 style="margin-bottom: 10px;">Low stock items</h3>
+
+  {% if low %}
+    <ul>
+      {% for p in low %}
+        <li>
+          {{ p.name }} ({{ p.sku }}): 
+          <strong>{{ p.quantity }}</strong> &lt; {{ p.min_threshold }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No low stock items 🎉</p>
+  {% endif %}
+</div>
+
+{% endblock %}
