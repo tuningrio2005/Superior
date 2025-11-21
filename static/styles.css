@@ -1,0 +1,349 @@
+:root {
+    /* Cores aproximadas da Superior Hoods */
+    --sh-blue: #003b6f;
+    --sh-blue-dark: #002748;
+    --sh-orange: #f5a623;
+    --sh-bg: #f5f7fa;
+    --sh-text: #222222;
+}
+
+/* Reset simples */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--sh-bg);
+    color: var(--sh-text);
+}
+
+/* HEADER TOP */
+.sh-header {
+    background: linear-gradient(90deg, var(--sh-blue-dark), var(--sh-blue));
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.sh-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sh-logo img {
+    height: 42px;
+}
+
+/* NAV */
+.sh-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+}
+
+.sh-nav a:hover {
+    border-color: var(--sh-orange);
+}
+
+/* HERO */
+.sh-hero {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dde3ee;
+}
+
+.sh-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 24px;
+}
+
+.sh-hero h1 {
+    font-size: 1.7rem;
+    color: var(--sh-blue-dark);
+    margin-bottom: 4px;
+}
+
+.sh-hero p {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* MAIN AREA */
+.sh-main {
+    max-width: 1200px;
+    margin: 20px auto 40px auto;
+    padding: 0 24px;
+}
+
+/* FLASH MESSAGES */
+.flash-container {
+    max-width: 1200px;
+    margin: 16px auto 0 auto;
+    padding: 0 24px;
+}
+
+.flash {
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.flash-success {
+    background: #e6f7e9;
+    color: #276738;
+    border: 1px solid #b5e2c1;
+}
+
+.flash-error {
+    background: #fdecea;
+    color: #b3261e;
+    border: 1px solid #f5c6cb;
+}
+
+.flash-info {
+    background: #e8f4fd;
+    color: #0b4f8a;
+    border: 1px solid #b6d4fe;
+}
+
+.flash-warning {
+    background: #fff4e5;
+    color: #8a5a00;
+    border: 1px solid #ffd8a8;
+}
+
+/* PAGE HEADER (titulo + botão) */
+.sh-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.sh-page-header h2 {
+    font-size: 1.3rem;
+    color: var(--sh-blue-dark);
+}
+
+.sh-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* SEARCH BAR */
+.sh-search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.sh-search input[type="text"] {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #c5cedf;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+}
+
+/* CARD GENÉRICO */
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+}
+
+/* Painel de aviso */
+.panel-warn {
+    border-left: 4px solid var(--sh-orange);
+}
+
+/* TABELAS */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: var(--sh-blue-dark);
+    color: #ffffff;
+}
+
+.table thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.table tbody tr:nth-child(even) {
+    background: #f9fbff;
+}
+
+.table tbody td {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* COLUNA DE AÇÕES */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.inline-form {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.inline-form input[type="number"],
+.inline-form input[type="text"] {
+    padding: 4px 6px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid #c5cedf;
+    background-color: #ffffff;
+}
+
+.inline-form input[type="number"] {
+    width: 70px;
+}
+
+.inline-form input[type="text"] {
+    width: 120px;
+}
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* BOTÕES */
+.btn {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary {
+    background: var(--sh-blue);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: var(--sh-blue-dark);
+}
+
+.btn-secondary {
+    background: #ffffff;
+    color: var(--sh-blue);
+    border: 1px solid var(--sh-blue);
+}
+
+.btn-secondary:hover {
+    background: var(--sh-blue);
+    color: #ffffff;
+}
+
+.btn-danger {
+    background: #b3261e;
+    color: #ffffff;
+    border: 1px solid #b3261e;
+}
+
+.btn-danger:hover {
+    background: #861812;
+}
+
+.btn-link {
+    background: transparent;
+    border: none;
+    color: var(--sh-blue);
+    padding: 0;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* FORM DE PRODUTO (product_form.html) */
+.sh-form-card {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 24px;
+}
+
+.sh-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sh-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.sh-form-group label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--sh-blue-dark);
+}
+
+.sh-form-group input[type="text"],
+.sh-form-group input[type="number"],
+.sh-form select {
+    padding: 8px 10px;
+    border: 1px solid #c5cedf;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+}
+
+.sh-checkbox label {
+    font-weight: 400 !important;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sh-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* FOOTER */
+.sh-footer {
+    background: var(--sh-blue-dark);
+    color: #ffffff;
+    text-align: center;
+    padding: 12px 10px;
+    font-size: 0.8rem;
+}
